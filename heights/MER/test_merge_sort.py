@@ -10,9 +10,11 @@ def test_merge_sort(sorted_array, sorted_len, unsorted_array, unsorted_len, resu
     assert len(sorted_array) == sorted_len
     assert len(unsorted_array) == unsorted_len
 
-    for element in unsorted_array:
-        sorted_array.append(element)
-        sorted_array = merge_sort(sorted_array)
+    # for element in unsorted_array:
+    #     sorted_array.append(element)
+    #     sorted_array = merge_sort(sorted_array)
+
+    new_array = merge_sort(unsorted_array, unsorted_len, sorted_array, sorted_len)
     
-    assert sorted_array == result
+    assert new_array == result
 

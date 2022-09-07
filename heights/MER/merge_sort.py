@@ -4,54 +4,42 @@
 import os
 from typing import List
 
-def merge_sort(sequence: List[int]) -> List[int]:
+def merge_sort(sequence_one: List[int], len_one: int, sequence_two: List[int], len_two: int) -> List[int]:
+    sequence: List[int] = [None] * (len_one + len_two)
 
-    left: List[int]
-    right: List[int]
+    i, j, k = 0, 0, 0
 
-    if len(sequence) > 1:
-        mid: int = len(sequence)//2
-
-        left, right = sequence[:mid], sequence[mid:]
-
-        merge_sort(left)
-        merge_sort(right)
-
-        i, j, k = 0, 0, 0
-
-        while i < len(left) and j < len(right):
-            if left[i] < right[j]:
-                sequence[k] = left[i]
-                i += 1
-            else:
-                sequence[k] = right[j]
-                j += 1
-            k += 1
-  
-        # Checking if any element was left
-        while i < len(left):
-            sequence[k] = left[i]
-            i += 1
-            k += 1
-  
-        while j < len(right):
-            sequence[k] = right[j]
-            j += 1
-            k += 1
+    while i < len_one and j < len_two:
+        if sequence_one[i] < sequence_two[j]:
+            sequence[k] = sequence_one[i]
+            k = k + 1
+            i = i + 1
+        else:
+            sequence[k] = sequence_two[j]
+            k = k + 1
+            j = j + 1
+ 
+    while i < len_one:
+        sequence[k] = sequence_one[i]
+        k = k + 1
+        i = i + 1
+ 
+    while j < len_two:
+        sequence[k] = sequence_two[j]
+        k = k + 1
+        j = j + 1
 
     return sequence
 
 if __name__ == '__main__':
     with open(os.path.join(os.getcwd(), 'input/rosalind_mer.txt'), 'r') as lines:
         a = int(lines.readline().strip("\n"))
-        sorted_array: List[int] = list(map(int, lines.readline().strip("\n").split(" ")))
+        array_one: List[int] = list(map(int, lines.readline().strip("\n").split(" ")))
         b = int(lines.readline().strip("\n"))
-        unsorted_array: List[int] = list(map(int, lines.readline().strip("\n").split(" ")))
+        array_two: List[int] = list(map(int, lines.readline().strip("\n").split(" ")))
 
-        for element in unsorted_array:
-            sorted_array.append(element)
-            sequence = merge_sort(sorted_array)
+        new_array: List[int] = merge_sort(array_one, a, array_two, b)
 
         with open(os.path.join(os.getcwd(), 'output/rosalind_mer.txt'), 'w') as outs:
-            data: str = " ".join(sorted_array).strip()
+            data: str = " ".join(str(x) for x in new_array).strip()
             outs.write(data)
