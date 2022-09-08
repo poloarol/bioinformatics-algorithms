@@ -23,10 +23,12 @@ if __name__ == '__main__':
     with open(os.path.join(os.getcwd(), "input/rosalind_sign.txt"), "r") as lines:
         for line in lines:
             n: int = int(line.strip("\n").strip())
-            sign_perms: List[int] = range(1, n+1) + range(-n, 0)
+            sign_perms: List[int] = list(range(1, n+1)) + list(range(-n, 0))
 
             perms = list(signed_permutations(sign_perms, r=n))
 
-            with open(os.path.join(os.getcwd(), "output/rosalind_sign.txt"), "a") as outs:
-                data = " ".join(str(x) for x in perms) + "\n"
-                outs.write(data)
+            with open(os.path.join(os.getcwd(), "output/rosalind_sign.txt"), "w") as outs:
+                outs.write(f"{len(perms)}\n")
+                for perm in perms:
+                    data = " ".join(str(x) for x in perm) + "\n"
+                    outs.write(data)

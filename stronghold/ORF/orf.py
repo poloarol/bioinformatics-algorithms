@@ -3,7 +3,7 @@
 ### Find all open reading frames
 
 import os
-from typing import List, Dict
+from typing import List, Dict, Set
 
 codons: Dict[str, str] = {
     "TTT": "F", "CTT": "L", "ATT": "I", "GTT": "V", "TTC": "F",
@@ -25,6 +25,7 @@ pair: Dict[str, str] = {"A": "T", "C": "G", "G": "C", "T": "A"}
 
 def find_orf(sequence: str) -> int:
     start_codons: List[int] = []
+    # alternatively, you can use re to find all start codons
     for i in range(0, len(sequence)-2):
         if "ATG" == sequence[i:i+3]:
             start_codons.append(i)
@@ -34,15 +35,14 @@ def find_orf(sequence: str) -> int:
 def translation(start: int, sequence: str) -> str:
     protein: str = ""
 
-    for i in range(start, len(sequence), 3):
-        if codons[sequence[i:i+3]]:
-            protein = "".join([protein, codons[sequence[i:i+3]]])
-        else:
-            break
-    
-    return protein
+    if "TAA" in sequence[start:] or "TGA" in sequence[start:] or "TAG" in sequence[start:]:
+        for i in range(start, len(sequence)-2, 3):
+            if codons[sequence[i:i+3]]:
+                protein = "".join([protein, codons[sequence[i:i+3]]])
+            else:
+                return protein
 
-def reverse_complement(nucletodides: str) -> str:
+def reverse_complement(nucleotides: str) -> str:
     """
     Reverse complement a DNA sequence.
 
@@ -57,10 +57,10 @@ def reverse_complement(nucletodides: str) -> str:
         Reverse complement of DNA sequence
     """
 
-    if nucletodides and len(nucletodides) <= 1000:
+    if nucleotides and len(nucleotides) <= 1000:
         complement_sequence: str = ""
-        nucletodides = nucletodides.upper().replace(" ", "")
-        for nt in nucletodides:
+        nucleotides = nucleotides.upper().replace(" ", "").strip("\n")
+        for nt in nucleotides:
             complement_sequence = "".join([complement_sequence, pair[nt]])
         
         return complement_sequence[::-1]
@@ -69,11 +69,23 @@ def reverse_complement(nucletodides: str) -> str:
 
 if __name__ == "__main__":
     with open(os.path.join(os.getcwd(), "input/rosalind_orf.txt"), "r") as lines:
+        sequence: str = ""
         for line in lines:
             if ">" not in line:
-                starts: List[int] = find_orf(line.strip("\n"))
-                
-                with open(os.path.join(os.getcwd(), "output/rosalind_orf.txt"), "w") as outs:
-                    for start in starts:
-                        protein_sequence: str = translation(start, line)
-                        outs.write(protein_sequence)
+                sequence = "".join([sequence, line.strip("\n").strip(" ")])
+
+        start_one: List[int] = find_orf(sequence)
+        start_two: List[int] = find_orf(reverse_complement(sequence))
+
+        with open(os.path.join(os.getcwd(), "output/rosalind_orf.txt"), "w") as outs:
+            unique_proteins: Set = set()
+            for one, two in zip(start_one, start_two):
+                protein_one: str = translation(one, sequence).strip()
+                protein_two: str = translation(two, reverse_complement(sequence)).strip()
+                unique_proteins.add(protein_one)
+                unique_proteins.add(protein_two)
+
+            unique_proteins = set(filter(None, unique_proteins))
+            
+            for protein in unique_proteins:
+                outs.write(f"{protein}\n")

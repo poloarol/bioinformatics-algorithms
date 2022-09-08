@@ -2,35 +2,41 @@
 ### Given a set of protein sequences, find the longest common substring (motif)
 
 import os
+import re
 from typing import Set, List
 
-def find_motif(shortest_sequence: str, sequences: Set[str]) -> str:
-    """
-    Given a set of protein sequences, find the longest common substring (motif)
-    :param seq_one:
-    :param sequences:
-    :return: motif(str)
-    """
+def find_motif(sequences: Set[str]) -> str:
+    lcs = ""
+    # Go through each DNA sequence in the list.
+    for i in range(len(sequences)):
+        sequence = sequences[i]
+        seq_length = len(sequence)
+        # Iterate through all possible substrings.
+        for index1 in range(seq_length+1):
+            for index2 in range(index1, seq_length):
+                test_seq = sequence[index1:index2+1]
+                # print(f"index1 is {index1}, index2+1 is {index2+1}")
+                matches_all_lines = False
 
-    lcs: str = ""
-    print(shortest_sequence)
-
-    for start in range(len(shortest_sequence)):
-        for end in range(len(shortest_sequence), start, -1):
-            if len(shortest_sequence[start:end]) > len(lcs):
-                matches: List[bool] = []
-                for sequence in sequences:
-                    if shortest_sequence[start:end] in sequence:
-                        matches.append(True)
+                # Iterate through all other DNA sequences in the list and see if the current substring is found in all
+                # of them.
+                for test_line in range(i+1, len(sequences)):
+                    comp_seq = sequences[test_line]
+                    # comp_seq = comp_fasta.get_seq()
+                    # print(test_seq, comp_seq, lcs)
+                    x = re.search(test_seq, comp_seq)
+                    # print(x)
+                    if x is not None:
+                        # print(test_seq, comp_seq)
+                        matches_all_lines = True
                     else:
-                        matches.append(False)
-                if all(matches):
-                    lcs = shortest_sequence[start:end]
-            else:
-                break
-    return lcs
+                        matches_all_lines = False
+                        break
+                if matches_all_lines is True and len(test_seq) >= len(lcs):
+                    lcs = test_seq
+    return lcs[::-1]
 
-# TODO: Output is wrong. Needs revisiting
+# TODO: Too slow
 
 if __name__ == "__main__":
     sequence_content: Set[str] = set()
@@ -52,7 +58,7 @@ if __name__ == "__main__":
     shortest_sequence = min(sequence_content, key=len)
     sequence_content.remove(shortest_sequence)
 
-    longest_common_seq: str = find_motif(shortest_sequence, sequence_content)
+    longest_common_seq: str = find_motif(list(sequence_content))
 
     print(longest_common_seq)
 

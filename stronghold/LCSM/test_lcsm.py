@@ -33,10 +33,10 @@ def test_find_motif(fasta: str, expected_sequence: str) -> None:
     while "" in sequence_content:
         sequence_content.remove("")
 
-    shortest_sequence = min(sequence_content, key=len)
-    sequence_content.remove(shortest_sequence)
+    # shortest_sequence = min(sequence_content, key=len)
+    # sequence_content.remove(shortest_sequence)
 
-    longest_common_seq: str = find_motif(shortest_sequence, sequence_content)
+    longest_common_seq: str = find_motif(list(sequence_content))
 
     assert expected_sequence == longest_common_seq
 
