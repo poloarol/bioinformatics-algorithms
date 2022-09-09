@@ -24,9 +24,9 @@ def two_sum(sequence: List[int]) -> List[int]:
         if -item in sequence[i+1:]:
            for j in range(i+1, len(sequence)):
                 if (sequence[i] + sequence[j] == 0):
-                    results.append([i+1, j+1])
+                    results.extend([[i+1, j+1]])
     
-    return results if results else [-1]
+    return results if results else [[-1]]
 
 # TODO: Output is wrong
 

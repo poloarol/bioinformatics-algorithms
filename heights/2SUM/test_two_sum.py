@@ -12,5 +12,5 @@ expected_results: List[List[int]] = [[-1], [2, 4], [-1], [1, 3]]
 def test_two_sum(sequences: List[int], expected: List[List[int]]):
     results: List[List[int]] = []
     for sequence in sequences:
-        results.append(two_sum(sequence))
+        results.extend(two_sum(sequence))
     assert expected == results

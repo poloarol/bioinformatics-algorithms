@@ -26,11 +26,14 @@ def test_bfs(data, num_nodes, num_edges, expected):
     g = dict(sorted(g.items()))
     results: List[int] = bfs(g)
 
+    edges: int = 0
     all_nodes: List[int] = set()
 
-    for node in g.keys():
+    for node, value in g.items():
         all_nodes.add(node)
         all_nodes.update(g[node])
+        edges = edges + len(value)
 
     assert expected == " ".join(str(x) for x in results)
     assert len(all_nodes) == num_nodes
+    assert edges == num_edges
