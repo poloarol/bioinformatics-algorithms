@@ -8,3 +8,9 @@ What is present:
 3. Solution in Python
 4. Testing using PyTest module.
 
+## Usage:
+
+1. python -m venv <environment-name>
+2. source activate <environment-name>
+3. pip install -r requirements.txt
+4. deactivate (Use when done!)
