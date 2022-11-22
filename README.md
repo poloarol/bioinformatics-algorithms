@@ -11,7 +11,7 @@ What is present:
 
 ## Usage:
 
-1. python -m venv <environment-name>
-2. source activate <environment-name>
+1. python -m venv your-environment-name
+2. source activate your-environment-name
 3. pip install -r requirements.txt
 4. deactivate (Use when done!)
