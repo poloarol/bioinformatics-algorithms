@@ -1,5 +1,6 @@
-# rosalind2k22
-Solutions to Rosalind (https://rosalind.info/problems/locations/) problems.
+# Bioinformatics Algorithms
+
+Solutions to Rosalind problems: https://rosalind.info/problems/locations/
 
 What is present:
 
