@@ -1,6 +1,6 @@
 # Bioinformatics Algorithms
 
-Solutions to Rosalind problems: https://rosalind.info/problems/locations/
+Solutions to Rosalind bioinformatics problems using Python: https://rosalind.info/problems/locations/
 
 What is present:
 
@@ -15,3 +15,6 @@ What is present:
 2. source activate your-environment-name
 3. pip install -r requirements.txt
 4. deactivate (Use when done!)
+
+## Future Steps
+1. Ameliorate some of the algorithms as I move forward, because some solutions are slow
